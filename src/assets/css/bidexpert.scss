@@ -1,0 +1,8 @@
+.bid-ellipsis-tooltip {
+  max-width: 60%;
+}
+.bid-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

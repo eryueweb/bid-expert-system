@@ -1,0 +1,29 @@
+{
+  "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+              "ie": 10
+          },
+          "useBuiltIns": "entry"
+        }
+      ],
+      [
+        "@vue/babel-preset-jsx",
+        {
+          "vModel": true,
+          "compositionAPI": true
+        }
+      ]
+    ],
+    "plugins": [
+      [
+        "component",
+        {
+          "libraryName": "element-ui",
+          "styleLibraryName": "theme-chalk"
+        }
+      ]
+    ]
+}
