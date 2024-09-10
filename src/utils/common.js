@@ -12,3 +12,28 @@ export function getUrlParams(callback) {
   }
   return urlParam;
 }
+export function deepclone(obj) {
+  if (typeof obj !== 'object' || obj === null) {
+    return obj
+  }
+  let newObj;
+  if (Object.prototype.toString.call(obj) === '[object Object]') {
+    newObj = {};
+    Reflect.ownKeys(obj).forEach(key => {
+      newObj[key] = deepclone(obj[key])
+    })
+  }
+  else if (Array.isArray(obj)) {
+    newObj = [];
+    obj.forEach(item => {
+      newObj.push(deepclone(item))
+    })
+  }
+  else if (Object.prototype.toString.call(obj) === '[objec Set]') {//不重复性，唯一性。
+    newObj = new Set([...obj]);
+  }
+  else if (Object.prototype.toString.call(obj) === '[objec Map]') {//键值对集合，键可以是任何类型，函数对象基本类型等。快速查找数据。复杂数据去重。
+    newObj = new Map([...obj]);
+  }
+  return newObj;
+}

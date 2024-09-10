@@ -48,8 +48,15 @@ export default {
     ...mapActions([
       'setMenuList'
     ]),
-    toMenu() {
-
+    toMenu(menu) {
+      console.log('menu:',menu);
+      console.log('router.options.routes:',this.$router.options.routes);
+      const {
+        menuName
+      } = menu;
+      this.$router.push({
+        name: menuName
+      })
     }
   }
 }

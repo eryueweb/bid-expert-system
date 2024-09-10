@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router';
+import store from '@/store';
 const routes = [
   {
     path: '/',
@@ -36,5 +37,9 @@ const routes = [
 const router = new VueRouter({
   base: '/',
   routes
+});
+router.beforeEach((to, from , next) => {
+  store.dispatch('setMenuList');
+  next();
 });
 export default router;
