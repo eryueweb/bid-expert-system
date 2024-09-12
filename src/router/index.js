@@ -1,14 +1,14 @@
 import VueRouter from 'vue-router';
 import store from '@/store';
 const routes = [
-  {
-    path: '/',
-    name: 'system',
-    component: () => import('@/views/systemView/index.vue'),
-    meta: {
-      title: '专家库'
-    }
-  },
+  // {
+  //   path: '/',
+  //   name: 'system',
+  //   component: () => import('@/views/systemView/index.vue'),
+  //   meta: {
+  //     title: '专家库'
+  //   }
+  // },
   {
     path: '/register',
     name: 'register',
@@ -34,12 +34,39 @@ const routes = [
     }
   }
 ];
+const originPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originPush.call(this, location).catch(err=> err);
+}
+export const createRouter = () => {
+  return new VueRouter({
+    base: '/',
+    routes
+  })
+};
 const router = new VueRouter({
   base: '/',
   routes
 });
+export function resetRouter() {
+  const newRouter = createRouter();
+  router.matcher = newRouter.matcher;
+}
 router.beforeEach((to, from , next) => {
-  store.dispatch('setMenuList');
-  next();
+  store.dispatch('setMenuList').then(parentRoute => {
+    // resetRouter();
+    // router.addRoutes(parentRoute);
+    next();
+    // next({
+    //   ...to,
+    //   replace: true
+    // })
+  }).catch(err => {
+    console.log(err);
+    // next({
+    //   name: 'system'
+    // })
+    next();
+  });
 });
 export default router;

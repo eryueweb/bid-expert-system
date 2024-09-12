@@ -2,7 +2,11 @@ import {
   getMenu
 } from '@/api/layoutApi.js';
 import HomeView from '@/views/homeView/homeView.vue';
-import router from '@/router';
+import router, {
+  createRouter,
+  resetRouter
+} from '@/router';
+const navRoutes = [];
 // 菜单获取
 export default {
   setMenuList(context) {
@@ -13,14 +17,24 @@ export default {
     }).then(res => {
       context.commit('SET_MENU_LIST', res.data);
       const menuListToRoute = JSON.parse(JSON.stringify(res.data));
-      modifyNestedArray(menuListToRoute, menuToRoute);
-      console.log('menuListToRoute:',menuListToRoute);
-      router.addRoutes(menuListToRoute);
+      getMenuRoute(menuListToRoute);
+      // modifyNestedArray(menuListToRoute, menuToRoute);
+      const parentRoute = {
+        path: '/',
+        name: 'system',
+        component: () => import('@/views/systemView/index.vue'),
+        meta: {
+          title: '专家库'
+        }
+      };
+      parentRoute.children = navRoutes;
+      // const newRouter = createRouter();
+      // router.matcher = newRouter.matcher;
+      router.addRoutes([parentRoute]);
       // console.log('router.getRoutes:',router.getRoutes());
       // menuListToRoute.forEach(route => {
       //   addRouteWithChildren(router, route)
       // });
-      console.log('router:',router);
     }).catch(rej => {
       if (rej.header && rej.header.ret === 1) {
         this.$message.error(rej.header.msg)
@@ -30,6 +44,42 @@ export default {
     })
   }
 }
+function getMenuRoute(obj) {
+  // return new Promise(function(resolve, reject){
+    if (Array.isArray(obj)) {
+      obj.forEach(routeItem => {
+        if (routeItem.childrenMenus.length) {
+          getMenuRoute(routeItem.childrenMenus);
+        } else {
+          const newRouteItem = {
+            name: routeItem.menuName,
+            path: routeItem.menuPath,
+            component: () => import(`@/views/${routeItem.componentPath}.vue`),
+            meta: {
+              title: routeItem.menuDisplayName
+            }
+          };
+          navRoutes.push(newRouteItem)
+        }
+      })
+    } else {
+      if (obj.childrenMenus.length) {
+        getMenuRoute(obj.childrenMenus);
+      } else {
+        const newRouteItem = {
+          name: routeItem.menuName,
+          path: routeItem.menuPath,
+          component: () => import(`@/views/${routeItem.componentPath}.vue`),
+          meta: {
+            title: routeItem.menuDisplayName
+          }
+        };
+        navRoutes.push(newRouteItem)
+      }
+    }
+  // })
+}
+// 添加两级路由，每级路由都有对应页面
 // 循环更新
 function modifyNestedArray(arr, modifyFn) {
   arr.forEach((item, index) => {
@@ -63,6 +113,7 @@ function menuToRoute(menu) {
     }
   }
   else {
+    // console.log('`@/views/${componentPath}.vue`:',`@/views/${componentPath}.vue`);
     return {
       name: menuName,
       path: menuPath,

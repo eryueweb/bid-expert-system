@@ -32,6 +32,9 @@ import {
   mapActions
 } from 'vuex';
 import SubMenu from './subMenu.vue';
+import {
+  getUrlParams
+} from '@/utils/common.js';
 export default {
   computed: {
     ...mapState([
@@ -42,7 +45,7 @@ export default {
     SubMenu
   },
   created() {
-    this.setMenuList();
+    this.setMenuList().then(()=>{}).catch(err=>{});
   },
   methods: {
     ...mapActions([
@@ -55,7 +58,10 @@ export default {
         menuName
       } = menu;
       this.$router.push({
-        name: menuName
+        name: menuName,
+        query: {
+          token: getUrlParams().token
+        }
       })
     }
   }
