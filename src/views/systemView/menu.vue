@@ -67,3 +67,52 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+  .scroll-wrapper {
+    height: calc(100% - 45px);
+  }
+  // ::v-deep .el-scrollbar__view {
+  //   height: calc(100vh - 0px)!important;
+  // }
+  ul.el-menu {
+    // height: calc(100vh - 0px);
+    box-sizing: border-box;
+    // padding-top: 55px;
+    // height: calc(100% - 0px);
+    border-right: 1px solid #fff;
+  }
+  .left-menu {
+    padding-top: 55px;
+  }
+  .fold-btn-container {
+    text-align: right;
+    padding-top: 10px;
+    padding-right: 5px;
+  }
+  .el-aside {
+    // min-height: 660px;
+    // position: relative;
+    background: #fff;
+    transition: width 0.15s;
+    -webkit-transition: width 0.15s;
+    -moz-transition: width 0.15s;
+    -webkit-transition: width 0.15s;
+    -o-transition: width 0.15s;
+  }
+  .left-top {
+    // position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% - 1px);
+    // z-index: 10;
+    height: 45px;
+    line-height: 45px;
+    background: #00AAE6;
+    color: white;
+    font-size: 17px;
+    .left-logo-text {
+      padding-left: 6px;
+    }
+  }
+</style>

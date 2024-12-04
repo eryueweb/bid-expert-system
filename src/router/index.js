@@ -1,6 +1,14 @@
 import VueRouter from 'vue-router';
 import store from '@/store';
 const routes = [
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/loginView/loginView.vue'),
+    meta: {
+      title: '登录'
+    }
+  },
   // {
   //   path: '/',
   //   name: 'system',

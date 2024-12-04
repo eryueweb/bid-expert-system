@@ -37,3 +37,31 @@ export function deepclone(obj) {
   }
   return newObj;
 }
+// 数组扁平化
+export function flatternArray(arr) {
+  return arr.reduce((newArr, val) => {
+    if (Array.isArray(val))  {
+      newArr.push(...flatternArray(val))
+    }
+    else {
+      newArr.push(val)
+    }
+    return newArr;
+  }, [])
+}
+// 深度优先搜索，修改全部叶子结点数据，并提取出来，本系统主要应用于菜单格式化为路由
+export function dfs(source, childrenName, modifyFunc) {
+  const result = [];
+  const recursion = data => {
+    data.forEach(item => {
+      if (item[childrenName] && item[childrenName].length) {
+        recursion(item[childrenName])
+      } else {
+        const newItem = modifyFunc(item);
+        result.push(newItem);
+      }
+    })
+  };
+  recursion(source);
+  return result;
+}
